@@ -6,7 +6,7 @@
 ## ATENÇÃO!!!
 ##
 ## A inicialização do writer tem que ser feita assim:
-## /usr/bin/soffice --writer --norestore --nologo --norestore --nofirststartwizard --accept="socket,port=2002;urp;"
+## /usr/bin/soffice --impress --norestore --nologo --norestore --nofirststartwizard --accept="socket,port=2002;urp;"
 ## e não da forma como é indicada no artigo
 
 import uno
@@ -34,6 +34,47 @@ import uno
 
 ## /usr/bin/soffice --calc --norestore --nologo --norestore --nofirststartwizard --accept="socket,port=2002;urp;"
 
+## get the uno component context from the PyUNO runtime
+#localContext = uno.getComponentContext()
+#
+## create the UnoUrlResolver
+#resolver = localContext.ServiceManager.createInstanceWithContext("com.sun.star.bridge.UnoUrlResolver", localContext )
+#
+## connect to the running office
+#ctx = resolver.resolve( "uno:socket,host=localhost,port=2002;urp;StarOffice.ComponentContext" )
+#smgr = ctx.ServiceManager
+#
+## get the central desktop object
+#desktop = smgr.createInstanceWithContext("com.sun.star.frame.Desktop",ctx)
+#
+## access the current writer document
+#model = desktop.getCurrentComponent()
+#
+## Lista o nome das planilhas
+#nomes = model.Sheets.ElementNames;
+#print(nomes)
+#
+## access the active sheet
+#active_sheet = model.CurrentController.ActiveSheet
+#
+## access cell C4
+#cell1 = active_sheet.getCellRangeByName("C4")
+#
+## set text inside
+#cell1.String = "Hello world"
+#
+## other example with a value
+#cell2 = active_sheet.getCellRangeByName("E6")
+#cell2.Value = cell2.Value + 1
+
+##########
+##
+## Este trecho foi criado por chatBot para inserir uma imagem em um slide
+##
+## Adaptei a inicialização para pelo código anterior
+##
+##########
+
 # get the uno component context from the PyUNO runtime
 localContext = uno.getComponentContext()
 
@@ -48,21 +89,32 @@ smgr = ctx.ServiceManager
 desktop = smgr.createInstanceWithContext("com.sun.star.frame.Desktop",ctx)
 
 # access the current writer document
-model = desktop.getCurrentComponent()
+document = desktop.getCurrentComponent()
 
-# Lista o nome das planilhas
-nomes = model.Sheets.ElementNames;
-print(nomes)
+# A partir daqui o código é do chatbot
 
-# access the active sheet
-active_sheet = model.CurrentController.ActiveSheet
+from com.sun.star.beans import PropertyValue
+from com.sun.star.awt import Size
+from com.sun.star.awt import Point
 
-# access cell C4
-cell1 = active_sheet.getCellRangeByName("C4")
+# Get the current slide
+slide = document.CurrentController.CurrentPage
+#indice = slide.getIndex()
 
-# set text inside
-cell1.String = "Hello world"
+import urllib.parse ## 
 
-# other example with a value
-cell2 = active_sheet.getCellRangeByName("E6")
-cell2.Value = cell2.Value + 1
+# Create a graphic object with the desired image file
+graphic = document.createInstance("com.sun.star.drawing.GraphicObjectShape")
+graphic.GraphicURL = "file:////home/pseifer/repoprogs/memoria/chauvetpansm.jpg"
+
+# Set the size and position of the image on the slide
+tamanho = Size()
+tamanho.Height = 429*10
+tamanho.Width = 1003*10
+posicao = Point()
+posicao.X = 100
+posicao.Y = 100
+graphic.Size = tamanho
+graphic.Position = posicao
+
+slide.add(graphic)
