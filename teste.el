@@ -32,12 +32,15 @@
     )
 )
 
+
+
 ;; Assim também funciona - notar a diferença no while
 ;; Por algum motivo o código todo em json é passado para *message* e não sei porquê
 
 (with-temp-buffer
   (insert-file-contents "~/repoprogs/site/bookmark.json")
   (goto-char (point-min))
+  (setq a "") ;; por algum motivo no teste não precisei inicializar a variável, mas em outra aplicação, precisei...
   ;;  (cl-loop until (not (search-forward "site" nil "noerror"))
   (while (search-forward "site" nil "noerror")
 	(push (thing-at-point 'line t) a))
@@ -47,4 +50,20 @@
       (insert (car a))
       (setq a (cdr a)))
     )
+)
+
+;; Apaga linhas de forma alternada, pensando em linhas repetidas
+
+(with-current-buffer "teste.txt"
+  (goto-char (point-min))
+  (setq linhas (count-lines (point-min) (point-max)))
+  (setq conta 0)
+  (while (<= conta linhas)
+  (delete-region
+   (line-beginning-position)
+    (line-end-position))
+    (goto-char (line-beginning-position))
+    (delete-blank-lines)
+    (next-line)
+  (setq conta (+ conta 1)))
 )
