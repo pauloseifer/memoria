@@ -34,6 +34,24 @@ def pega_dados():
       celula = elemento.find_element(By.XPATH, ".//div[@column-index='3']")
       celula.send_keys(Keys.DOWN)
 
+Fiz o código abaixo para pegar os dados de homicídios de https://app.powerbi.com/view?r=eyJrIjoiYjhhMDMxMTUtYjE3NC00ZjY5LWI5Y2EtZDljNzBlNDg2ZjVkIiwidCI6ImViMDkwNDIwLTQ0NGMtNDNmNy05MWYyLTRiOGRhNmJmZThlMSJ9
+Houve algum problema com o prímeiro município, Acrelândia, por conta da indexação, mas no fim foi possível corrigir manualmente.
+######def pega_dados():
+######   for i in range(5575):
+######     elemento = driver.find_element(By.XPATH, "//div[@row-index='" + str(i)+ "']")
+######     linha = str(i);
+######     estado = elemento.find_element(By.XPATH, ".//div[@aria-colindex='2']").text
+######     municipio = elemento.find_element(By.XPATH, ".//div[@aria-colindex='3']").text
+######     h2020 = elemento.find_element(By.XPATH, ".//div[@aria-colindex='4']").text
+######     h2021 = elemento.find_element(By.XPATH, ".//div[@aria-colindex='5']").text
+######     h2022 = elemento.find_element(By.XPATH, ".//div[@aria-colindex='6']").text
+######     linha = linha+";"+estado+";"+municipio+";"+h2020+";"+h2021+";"+h2022+"\n"
+######     celula = elemento.find_element(By.XPATH, ".//div[@column-index='4']")
+######     celula.send_keys(Keys.DOWN)
+######     arquivo.write(linha)
+     
+
+      
 O que a função faz é baixar elemento por elemento, 'clicando' para baixo para seguir para o próximo elemento.
 Como cada elemento tem um índice único para o bloco de dados, de acordo com a seleção nas caixas de diálogos (deixei como "Todos"), coloquei o índice na busca pelo row-index, que é a propriedade do div que indica a linha/elemento. Para aplicar a seta para baixo, procurei uma célula dentro daquele div, e apliquei o Key.DOWN. Notar que na busca dentro do div da célula tem um ".", que indica que a busca deve ser realizada a partir do ponto atual, que é o elemento. 
 
